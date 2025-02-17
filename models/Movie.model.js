@@ -53,5 +53,7 @@ movieSchema.statics.findByGenre = function(genre) {
     return this.find({ genre: genre });
 };
 
+// for clearence: Movie is the actual model instance
 const Movie = mongoose.model('Movie', movieSchema);
+
 export default Movie;
