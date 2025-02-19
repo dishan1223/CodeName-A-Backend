@@ -1,4 +1,4 @@
-// Dot env config
+// Dot ENV config
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -11,7 +11,6 @@ import cors from 'cors';
 import connectDB from './db/db.js';
 
 // Import Routes
-import indexRouter from './routes/index.route.js';
 import apiRouter from './routes/api.route.js';
 
 // initiate app
@@ -28,9 +27,6 @@ connectDB();
 
 
 // set routes
-// NOTE: I don't need an index route. 
-// Will remove it soon.
-app.use('/', indexRouter);
 app.use('/api', apiRouter);
 
 
