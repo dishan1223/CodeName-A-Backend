@@ -3,6 +3,7 @@ package main
 import (
     "github.com/gofiber/fiber/v2"
     "gorm.io/driver/sqlite"
+    "github.com/go-playground/validator/v10"
     "gorm.io/gorm"
     "log"
 )
@@ -11,13 +12,13 @@ var DB *gorm.DB
 
 type Movie struct {
     gorm.Model
-    Title string `json:"title"`
-    Description string `json:"description"`
-    Rating float64 `json:"rating"`
-    MovieDRT string `json:"movieDRT"`
-    Genre string `json:"genre"`
-    Poster string `json:"poster"`
-    Background string `json:"background"`
+    Title       string  `json:"title" validate:"required"`
+    Description string  `json:"description" validate:"required"`
+    Rating      float64 `json:"rating" validate:"required,gte=0,lte=10"`
+    MovieDRT    string  `json:"movieDRT" validate:"required"`
+    Genre       string  `json:"genre" validate:"required"`
+    Poster      string  `json:"poster" validate:"required"`
+    Background  string  `json:"background" validate:"required"`
 }
 
 // controllers
@@ -38,6 +39,11 @@ func AddMovie(c *fiber.Ctx) error {
         return c.Status(400).SendString("Could not parse JSON")
     }
 
+    validate := validator.New()
+    if err := validate.Struct(&movie); err != nil {
+        return c.Status(400).JSON(fiber.Map{"error": err.Error()})
+    } 
+    
     if err := DB.Create(&movie).Error; err != nil{
         return c.Status(500).SendString("Could not create movie")
     }
