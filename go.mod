@@ -1,4 +1,4 @@
-module github.com/dishan1223/tj-backend
+module github.com/dishan1223/CodeName-A-Backend
 
 go 1.24.2
 
