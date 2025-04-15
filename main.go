@@ -27,8 +27,11 @@ func main(){
     movies.Init(DB)
     
     // Routes
-    app.Get("/api/movies", movies.GetMovies)
-    app.Post("/api/movies/new", movies.AddMovie)
-    app.Put("/api/movies/update/:id", movies.UpdateMovie)
+    v1 := app.Group("/api/v1/movies")
+
+    v1.Get("/", movies.GetMovies)
+    v1.Post("/new", movies.AddMovie)
+    v1.Put("/update/:id", movies.UpdateMovie)
+
     log.Fatal(app.Listen(":3000"))
 }
