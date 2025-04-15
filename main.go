@@ -29,5 +29,6 @@ func main(){
     // Routes
     app.Get("/api/movies", movies.GetMovies)
     app.Post("/api/movies/new", movies.AddMovie)
+    app.Put("/api/movies/update/:id", movies.UpdateMovie)
     log.Fatal(app.Listen(":3000"))
 }
