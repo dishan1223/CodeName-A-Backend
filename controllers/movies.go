@@ -14,6 +14,7 @@ func Init(db *gorm.DB) {
 }
 
 // controllers
+// respond with the full movie database
 func GetMovies(c *fiber.Ctx) error {
     var movies []models.Movie
 
@@ -24,7 +25,7 @@ func GetMovies(c *fiber.Ctx) error {
     return c.JSON(movies)
 }
 
-
+// Respond with a status code for creating a new movie
 func AddMovie(c *fiber.Ctx) error {
     var movie models.Movie
 
@@ -45,6 +46,7 @@ func AddMovie(c *fiber.Ctx) error {
 }
 
 
+// Respond with a status code for updating a movie
 func UpdateMovie(c *fiber.Ctx) error {
     id := c.Params("id")
 
@@ -66,3 +68,21 @@ func UpdateMovie(c *fiber.Ctx) error {
     return c.JSON(movie)
 }
 
+// Respond with a status code for deleting a movie
+func DeleteMovie(c *fiber.Ctx) error {
+    id := c.Params("id")
+
+    var movie models.Movie
+    if err := DB.First(&movie, id).Error; err != nil {
+        return c.Status(404).SendString("Movie not found")
+    }
+
+    if err := DB.Delete(&movie).Error; err != nil {
+        return c.Status(500).SendString("Could not delete movie")
+    }
+
+    return c.JSON(fiber.Map{
+        "message": "Movie deleted successfully",
+        "status" : "success",
+    })
+}
